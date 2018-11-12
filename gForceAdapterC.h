@@ -3,9 +3,6 @@
 
 #include "gForceDataTypes.h"
 
-#ifdef USE_ARDUINO
-#include "Arduino.h"
-#endif
 
 #ifndef NULL
 #define NULL ((void*)0)
@@ -37,7 +34,7 @@ unsigned long int getMillis(void);
    
 enum GF_Ret GFC_GetgForcedata(struct GF_Data *gForceData, unsigned long timeout);
 	
-enum GF_Ret GFC_GetQuaternionToEuler(const struct GF_Quaternion *quat, struct GF_Euler *euler);
+enum GF_Ret GFC_QuaternionToEuler(const struct GF_Quaternion *quat, struct GF_Euler *euler);
 
 BOOL GFC_GetGesture(enum GF_Gesture gesture, unsigned long timeout);
 
