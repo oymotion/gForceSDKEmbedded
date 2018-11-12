@@ -59,6 +59,7 @@ to the AVR/ARM board over UART.
 		}
 	*
 		// returns System time 
+		
 		unsigned long int getMillis(void)
 		{
 			return System_RunTime();
