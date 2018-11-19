@@ -136,8 +136,7 @@ GF_Ret GForceAdapterPrivate::GetGForceData(GF_Data *gForceData, unsigned long ti
   bool hasPackageId;    // package id exists?
   int  dataPkgLen = -1; // length of package data
   unsigned char readData;
-  unsigned long time ;
-  unsigned long int newtime = m_getTimerFunc();
+  unsigned long startTime = m_getTimerFunc();
 
   while (true)
   {
@@ -149,7 +148,7 @@ GF_Ret GForceAdapterPrivate::GetGForceData(GF_Data *gForceData, unsigned long ti
     // Read one byte from the serial line
     while ((readLen = m_getCharFunc(&readData)) == 0)
     {
-      if((m_getTimerFunc() - newtime) > timeout)
+      if((unsigned long)(m_getTimerFunc() - startTime) > timeout)
       {
         return TIME_OUT;
       }
