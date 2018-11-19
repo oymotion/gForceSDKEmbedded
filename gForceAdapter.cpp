@@ -29,6 +29,11 @@
  *
  */
 
+/*
+ * see "https://oymotion.github.io/gForceEmbeddedSuit/gForce100EmbeddedSuiteUserGuide" for protocol
+ */
+
+
 #include "gForceAdapter.h"
 #include <math.h>
 #include <stdio.h>
@@ -222,17 +227,17 @@ GF_Ret GForceAdapterPrivate::GetGForceData(GF_Data *gForceData, unsigned long ti
         *((unsigned char *)&gForceData->value + i - GFORCE_HEADER_LEN) =
           tempByte;
       }
-
-      if (i == GFORCE_MSG_LEN_INDEX + dataPkgLen)
-      {
-        break; // complete
-      }
     }
 
     i++;
-    
-    if (i - GFORCE_HEADER_LEN >= sizeof(gForceData->value))
-      return ERR_DATA;
+
+    if ((dataPkgLen != -1) && (i - GFORCE_HEADER_LEN >= dataPkgLen))
+    {
+      break; // complete
+    }
+
+    //if (i - GFORCE_HEADER_LEN >= sizeof(gForceData->value))
+    //  return ERR_DATA;
   }
 
   return OK;
