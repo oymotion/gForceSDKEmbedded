@@ -60,7 +60,7 @@ enum GF_Ret GFC_GetgForcedata(struct GF_Data *gForceData, unsigned long timeout)
 /*  Convert quaternions to euler */
 enum GF_Ret GFC_QuaternionToEuler(const struct GF_Quaternion *quat, struct GF_Euler *euler)
 {
-  return getGForceAdapter()->QuaternionToEuler(quat, (GF_Euler *)euler);
+  return getGForceAdapter()->QuaternionToEuler(quat, euler);
 }
 
 
