@@ -22,7 +22,7 @@
 
 
 #ifdef __cplusplus
-extern "C"{
+extern "C" {
 #endif
 
 
@@ -31,9 +31,9 @@ int getChar(unsigned char *data);
 
 /* Implement me: get system run time */
 unsigned long int getMillis(void);
-   
+
 enum GF_Ret GFC_GetgForcedata(struct GF_Data *gForceData, unsigned long timeout);
-	
+
 enum GF_Ret GFC_QuaternionToEuler(const struct GF_Quaternion *quat, struct GF_Euler *euler);
 
 BOOL GFC_GetGesture(enum GF_Gesture gesture, unsigned long timeout);

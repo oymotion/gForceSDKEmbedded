@@ -42,41 +42,42 @@ class GForceAdapterPrivate;
 ///
 /// The class of gForce adapter
 ///
-class GForceAdapter {
-  public:
-    //GForceAdapter(int comNum = 0);
-    //GForceAdapter(HardwareSerial *serial);
-    GForceAdapter(FUNC_GET_SERIAL_DATA getCharFunc, FUNC_GET_MILLIS getTimerFunc);
+class GForceAdapter
+{
+public:
+  //GForceAdapter(int comNum = 0);
+  //GForceAdapter(HardwareSerial *serial);
+  GForceAdapter(FUNC_GET_SERIAL_DATA getCharFunc, FUNC_GET_MILLIS getTimerFunc);
 
-    ~GForceAdapter() {}
+  ~GForceAdapter() {}
 
-    ///
-    /// Brief Sets up the serial line connection. This function shall be called
-    /// prior to GetForceData.
-    ///
-    GF_Ret Init(void);
+  ///
+  /// Brief Sets up the serial line connection. This function shall be called
+  /// prior to GetForceData.
+  ///
+  GF_Ret Init(void);
 
-    ///
-    /// Reads one gForce package data from the serial line and outputs to
-    /// gForceData.
-    ///
-    /// \param[out] gForceData The GF_Data structure to store gForceData.
-    /// \return
-    GF_Ret GetGForceData(GF_Data *gForceData, unsigned long timeout);
+  ///
+  /// Reads one gForce package data from the serial line and outputs to
+  /// gForceData.
+  ///
+  /// \param[out] gForceData The GF_Data structure to store gForceData.
+  /// \return
+  GF_Ret GetGForceData(GF_Data *gForceData, unsigned long timeout);
 
-    ///
-    /// Checks if a specified gesture is received.
-    /// This function is used by the Scratch plugin.
-    ///
-    /// \param[in] gesture The specified gesture to check
-    /// \return true if the specified gesture is received; otherwise false
-    bool GotGesture(GF_Gesture gesture, unsigned long timeout);
+  ///
+  /// Checks if a specified gesture is received.
+  /// This function is used by the Scratch plugin.
+  ///
+  /// \param[in] gesture The specified gesture to check
+  /// \return true if the specified gesture is received; otherwise false
+  bool GotGesture(GF_Gesture gesture, unsigned long timeout);
 
-    // Helper function for converting a quaternion to a Euler angle
-    static GF_Ret QuaternionToEuler(const GF_Quaternion *quat, GF_Euler *euler);
+  // Helper function for converting a quaternion to a Euler angle
+  static GF_Ret QuaternionToEuler(const GF_Quaternion *quat, GF_Euler *euler);
 
-  private:
-    GForceAdapterPrivate *m_impl;
+private:
+  GForceAdapterPrivate *m_impl;
 };
 
 #endif

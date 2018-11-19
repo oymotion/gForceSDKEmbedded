@@ -40,28 +40,35 @@
 
 static GForceAdapter *_adapter = NULL;
 
+
 static GForceAdapter* getGForceAdapter()
 {
-	if (_adapter == NULL)
-		_adapter = new GForceAdapter(getChar , getMillis);
-	return _adapter;
+  if (_adapter == NULL)
+    _adapter = new GForceAdapter(getChar, getMillis);
+
+  return _adapter;
 }
+
 
 /*  parsing gforcejoint data  */
 enum GF_Ret GFC_GetgForcedata(struct GF_Data *gForceData, unsigned long timeout)
-{  
-	return getGForceAdapter()->GetGForceData((GF_Data *)gForceData,timeout); 
-}  
+{
+  return getGForceAdapter()->GetGForceData((GF_Data *)gForceData, timeout);
+}
+
+
 /*  Convert quaternions to euler */
-enum GF_Ret GFC_QuaternionToEuler(const struct GF_Quaternion *quat, struct GF_Euler *euler)  
-{  
-	return getGForceAdapter()->QuaternionToEuler((GF_Quaternion *)quat,(GF_Euler *)euler); 
-} 
+enum GF_Ret GFC_QuaternionToEuler(const struct GF_Quaternion *quat, struct GF_Euler *euler)
+{
+  return getGForceAdapter()->QuaternionToEuler((GF_Quaternion *)quat, (GF_Euler *)euler);
+}
+
+
 /*  get gesture */
-BOOL GFC_GetGesture(enum GF_Gesture gesture, unsigned long timeout)  
-{  
-    return getGForceAdapter()->GotGesture((GF_Gesture)gesture, timeout);   
-}  
+BOOL GFC_GetGesture(enum GF_Gesture gesture, unsigned long timeout)
+{
+  return getGForceAdapter()->GotGesture((GF_Gesture)gesture, timeout);
+}
 
 
 
