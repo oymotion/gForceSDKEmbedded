@@ -39,6 +39,11 @@
 #endif
 
 
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
+
+
 // Magic number
 #define MAGNUM_LOW ((unsigned char)0xFF)
 #define MAGNUM_HIGH ((unsigned char)0xAA)
@@ -175,6 +180,13 @@ GF_Ret GForceAdapterPrivate::GetGForceData(GF_Data *gForceData, unsigned long ti
     {
       hasPackageId     = tempByte & 0x80 ? true : false;
       gForceData->type = (GF_Data::Type)(tempByte & ~0x80);
+      
+      if ((GF_Data::QUATERNION != gForceData->type) &&
+          (GF_Data::GESTURE != gForceData->type) &&
+          (GF_Data::EMGRAW != gForceData->type))
+      {
+        return ERR_DATA;
+      }
     }
     else if (i == GFORCE_MSG_LEN_INDEX)
     {
@@ -217,7 +229,10 @@ GF_Ret GForceAdapterPrivate::GetGForceData(GF_Data *gForceData, unsigned long ti
       }
     }
 
-    ++i;
+    i++;
+    
+    if (i - GFORCE_HEADER_LEN >= sizeof(gForceData->value))
+      return ERR_DATA;
   }
 
   return OK;
