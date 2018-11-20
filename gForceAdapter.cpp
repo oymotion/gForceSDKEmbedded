@@ -183,9 +183,9 @@ GF_Ret GForceAdapterPrivate::GetGForceData(GF_Data *gForceData, unsigned long ti
     }
     else if (i == GFORCE_EVENT_TYPE_INDEX)
     {
-      hasPackageId     = tempByte & 0x80 ? true : false;
+      hasPackageId     = ((tempByte & 0x80) != 0);
       gForceData->type = (GF_Data::Type)(tempByte & ~0x80);
-      
+
       if ((GF_Data::QUATERNION != gForceData->type) &&
           (GF_Data::GESTURE != gForceData->type) &&
           (GF_Data::EMGRAW != gForceData->type))
@@ -224,20 +224,16 @@ GF_Ret GForceAdapterPrivate::GetGForceData(GF_Data *gForceData, unsigned long ti
       }
       else
       {
-        *((unsigned char *)&gForceData->value + i - GFORCE_HEADER_LEN) =
-          tempByte;
+        *((unsigned char *)&gForceData->value + i - GFORCE_HEADER_LEN) = tempByte;
+
+        dataPkgLen--;
+
+        if (dataPkgLen == 0)
+          break;
       }
     }
 
     i++;
-
-    if ((dataPkgLen != -1) && (i - GFORCE_HEADER_LEN >= dataPkgLen))
-    {
-      break; // complete
-    }
-
-    //if (i - GFORCE_HEADER_LEN >= sizeof(gForceData->value))
-    //  return ERR_DATA;
   }
 
   return OK;
