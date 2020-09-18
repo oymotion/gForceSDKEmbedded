@@ -12,7 +12,7 @@ A gForce Embedded Suite includes a gForce Armband and a gForceJoint. The gForceJ
 1. Importing the gForce SDK for Embedded
 
 Download and unzip the library file into your project.
-In the main.c function you need to add `#include "gAorceAdapterC.h"`.
+In the main.c function you need to add `#include "gForceAdapterC.h"`.
 
 2. The API we provide in library
 
