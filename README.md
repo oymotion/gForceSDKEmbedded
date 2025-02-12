@@ -9,23 +9,23 @@ A gForce Embedded Suite includes a gForce Armband and a gForceJoint. The gForceJ
 
 ## Usage
 
-1. Importing the gForce SDK for Embedded
-
-Download and unzip the library file into your project.
-In the main.c function you need to add `#include "gForceAdapterC.h"`.
-
-2. The API we provide in library
-
 We provide some API interfaces in the library to help you analyze the data of gForce armband.
-`gForceAdapter.h` and `gForceAdapter.cpp` are files of C++ version, while `gForceAdapterC.h` and `gForceAdapterC.cpp` for wrapped version in C.
 You must add those files into your project, and call the interfaces:
+
+```C
+///
+/// Brief Sets up the serial line connection. This function shall be called
+/// prior to GetForceData.
+///
+void GF_Init(FUNC_GET_SERIAL_DATA getCharFunc, FUNC_GET_MILLIS getTimerFunc);
+```
 
 ```C
   //Parse the data received by the serial port;  
   //*gForceData : Points to the structure that stores the parsed data;  
   //timeout : Set data acceptance judgment time;
 
-  enum GF_Ret GFC_GetgForceData(struct GF_Data *gForceData, unsigned long timeout);
+  GF_Ret GF_GetGForceData(GF_Data *gForceData, unsigned long timeout);
 ```
 
 ```C
@@ -33,7 +33,7 @@ You must add those files into your project, and call the interfaces:
   //*quat :  Points to a structure that stores quaternions;  
   //*euler : Points to the structure that stores the euler Angle;  
 
-  enum GF_Ret GFC_QuaternionToEuler(const struct GF_Quaternion *quat, struct GF_Euler *euler);
+  GF_Ret GF_QuaternionToEuler(const GF_Quaternion *quat, GF_Euler *euler);
 ```
 
 ```C
@@ -41,7 +41,7 @@ You must add those files into your project, and call the interfaces:
   //gesture : The variable that stores the gesture;
   //timeout : Set data acceptance judgment time;  
 
-  BOOL GFC_GetGesture(enum GF_Gesture gesture, unsigned long timeout);
+  bool GF_GotGesture(GF_Gesture gesture, unsigned long timeout);
 ```
 
 The following two functions require users to populate themselves based on the platform they use:
@@ -52,7 +52,7 @@ The following two functions require users to populate themselves based on the pl
   // return : Returns 1 if data got, otherwise 0 
   int SYS_GetChar(unsigned char *data)  
   {  
-    int ret = Your_USART_RxData;  
+    int ret = Your_USART_RxData;
 
     if(ret == -1)  
       return 0;  
@@ -64,7 +64,7 @@ The following two functions require users to populate themselves based on the pl
 ```
 
 ```C
-  // returns System time
+  // returns System time in milliseconds
   unsigned long SYS_GetTick(void)
   {  
     return System_RunTime();  
@@ -74,27 +74,36 @@ The following two functions require users to populate themselves based on the pl
 Then in main() or proper funtion：
 
 ```C
+
+  // Init gForce
+  GF_Init(SYS_GetChar, SYS_GetTick);
+
   while (true)
   {
-    struct GF_Data gForceData;
-    struct GF_Euler Euler;
-    GF_Ret ret = GFC_GetgForceData((&gForceData), Timeout);
+    GF_Data gForceData;
+    GF_Euler Euler;
+
+    // timeout is 100ms
+    unsigned long timeout = 100;
+
+    // Get gForce data
+    GF_Ret ret = GF_GetGForceData((&gForceData), timeout);
+
     if (GF_RET_OK == ret)
     {
       GF_Gesture gesture;
       switch (gForceData.type)
       {
-      case GF_Data::QUATERNION:
-        GFC_QuaternionToEuler(&(gForceData.value.quaternion), &Euler);
-        // Serial.print("pitch: "); Serial.print(Euler.pitch);
-        // Serial.print(", yaw: "); Serial.print(Euler.yaw);
-        // Serial.print(", roll: "); Serial.print(Euler.roll);
-        // Serial.println();
-        break;
-      case GF_Data::GESTURE:
-        gesture = gForceData.value.gesture;
-        printf("gesture: %d\n", gesture);
+      case GF_QUATERNION:
+        GF_QuaternionToEuler(&(gForceData.value.quaternion), &Euler);
         // Do something?
+
+        break;
+      case GF_GESTURE:
+        gesture = gForceData.value.gesture;
+        // Do something?
+        // printf("gesture: %d\n", gesture);
+
         break;
       default:
         break;
@@ -102,7 +111,8 @@ Then in main() or proper funtion：
     }
     else
     {
-      printf("GFC_GetgForceData() returned: %d\n", ret);
+      // Error occured
+      // printf("GF_GetGForceData() returned: %d\n", ret);
     }
   }
 ```
