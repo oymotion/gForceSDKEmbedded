@@ -117,12 +117,12 @@ while (true)
 ```
 
 **Note:**
-    > Use equivalent functions of class gForceAdaptor for C++, or use C API in C++.
-    > To make sure gForce armband can recognize your gestures, please refer to
-    > [Guide to Performing Gestures][GuideToPerformingGestures]
-    > and spend several minutes learning and training yourself. The recognition
-    > rate can reach 95% and even higher after you get familiar with performing
-    > the gestures properly.
+> Use equivalent functions of class gForceAdaptor for C++, or use C API in C++.
+> To make sure gForce armband can recognize your gestures, please refer to
+> [Guide to Performing Gestures][GuideToPerformingGestures]
+> and spend several minutes learning and training yourself. The recognition
+> rate can reach 95% and even higher after you get familiar with performing
+> the gestures properly.
 
 ## Trouble shooting
 
